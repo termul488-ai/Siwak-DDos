@@ -69,9 +69,9 @@ except:
     sys.exit()
 
 
-# Check if script is running as root
+# Check if script
 if geteuid() != 0:
-    print("Run %s as root." % sys.argv[0])
+    print("Run %s ." % sys.argv[0])
     sys.exit()
 
 
