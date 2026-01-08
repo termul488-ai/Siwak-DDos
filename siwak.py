@@ -40,7 +40,7 @@ optional.add_argument('-payload', help='Set payload as hex-string')
 
 
 
-print("\nKittenz launcher.\n")
+print("")
 args = parser.parse_args()
 connected = 0
 dropped = 0
@@ -71,7 +71,7 @@ except:
 
 # Check if script
 if geteuid() != 0:
-    print("Run %s ." % sys.argv[0])
+    print("Run %s " % sys.argv[0])
     sys.exit()
 
 
