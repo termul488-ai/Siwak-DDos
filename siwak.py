@@ -146,11 +146,11 @@ def httpcall(url):
 			urllib2.urlopen(request)
 			if(flag==1): set_flag(0)
 			if(code==500): code=0
-	except urllib2.HTTPError, e:
+	except (urllib2.HTTPError, e:
 			set_flag(1)
 			code=500
 			time.sleep(60)
-	except urllib2.URLError, e:
+	except urllib2.URLError, e):
 			sys.exit()
 	else:
 			inc_counter()
