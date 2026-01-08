@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from scapy.all import *
+import scapy
 import sys
 import threading
 import time
