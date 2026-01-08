@@ -1,8 +1,9 @@
 #!/usr/bin/env python
-import scapy
+import os
 import sys
-import threading
 import time
+import scapy
+import threading
 #NTP Amp DOS attack
 #usage ntpdos.py <target ip> <ntpserver list> <number of threads> ex: ntpdos.py 1.2.3.4 file.txt 10
 #FOR USE ON YOUR OWN NETWORK ONLY
