@@ -4,6 +4,7 @@ import threading
 import aiohttp
 import asyncio
 import time
+import fade
 from pystyle import *
 import user_agent
 from colorama import Fore, Style, init
