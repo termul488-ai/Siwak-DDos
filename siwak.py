@@ -41,6 +41,7 @@ logo = """
 """
 faded_text = fade.fire(logo)
 print(faded_text)    
+print(Colorate.Horizontal(Colors.red_to_blue))
         
     num = 0
     reqs = []
