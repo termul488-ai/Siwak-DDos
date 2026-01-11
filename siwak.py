@@ -39,7 +39,7 @@ def check_socks5_proxy(proxy, test_url="http://httpbin.org/ip", timeout=5):
 
 def extract_socks5_from_text(text):
      """Extracts a SOCKS5 proxy from text."""
-    socks5_patterns = [
+        socks5_patterns = [
         r'\b(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}\b',
         r'socks5://(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}',
         r'\b(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}(?=:[A-Za-z\s]+)',
