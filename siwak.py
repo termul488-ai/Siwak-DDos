@@ -6,30 +6,40 @@ import time
 import asyncio
 import aiohttp
 
+NormalBlack = "\033[38;5;0m  \033[0m"
+NormalRed = "\033[38;5;1m  \033[0m"
+NormalGreen = "\033[38;5;2m  \033[0m"
+NormalYellow = "\033[38;5;3m  \033[0m"
+NormalBlue = "\033[38;5;4m  \033[0m"
+NormalMagenta = "\033[38;5;5m  \033[0m"
+NormalCyan = "\033[38;5;6m  \033[0m"
+NormalWhite =  "\033[38;5;7m  \033[0m"
+BrightBlack = "\033[48;5;0m  \033[0m"
+BrightRed =  "\033[48;5;1m  \033[0m"
+BrightGreen = "\033[48;5;2m  \033[0m"
+BrightYellow = "\033[48;5;3m  \033[0m"
+BrightBlue = "\033[48;5;4m  \033[0m"
+BrightMagenta = "\033[48;5;5m  \033[0m"
+BrightCyan = "\033[48;5;6m  \033[0m"
+BrightWhite = "\033[48;5;7m  \033[0m"
+
 
 # Clear command prompt based on the operating system
 if os.name == "nt":  # Windows
     os.system("cls")
 else:  # Unix/Linux/Mac
     os.system("clear")
-
-logo = """
-         _/       _/     _/ _/      _/ _/ _/           _/ _/ _/
-        _/       _/  _/       _/  _/       _/                 _/
-       _/       _/  _/       _/  _/       _/                  _/
-      _/ _/ _/ _/  _/       _/  _/       _/  _/ _/    _/ _/ _/
-     _/       _/  _/ _/ _/ _/  _/   _/  _/                   _/
-    _/       _/  _/       _/   _/ _/ _/                      _/
-                                  _/                 _/ _/ _/                                                                                 
+attemps = 0
+print("""
+                                                                               
 ╔═════════════════════════════════════════════════════════════════╗
 ║\033[33m                ~ H U D A I R U L  A L - A Q S H A ~             \033[31m║
 ║\033[32m                    I N T E R N A L  S C R I P T                 \033[31m║
 ║\033[96m                           By: Aby'Walidein                      \033[31m║
 ║\033[37m                               ——o0o——                           \033[31m║
 ╚═════════════════════════════════════════════════════════════════╝
-"""
-faded_text = fade.fire(logo)
-print(faded_text)
+""")
+
 ask = fade.pinkred("\033[33m==⟩⟩ RUN SC BUTUH WKT 35 DETIK DG TARGET URL: \033[0m")
 url = input(ask)
 print("\033[96mMOHON BERSABAR KARENA INI BUKAN UJIAN..! 🤭\033[0m")
