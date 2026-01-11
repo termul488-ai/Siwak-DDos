@@ -27,8 +27,6 @@ print("""
 
 """)
 
-    print(Colorate.Horizontal(Colors.red_to_blue, banner))
-
     num = 0
     reqs = []
 
