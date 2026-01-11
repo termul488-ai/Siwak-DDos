@@ -52,8 +52,8 @@ while attemps < 100:
         attemps += 1
         continue
 
-ask = fade.pinkred()
-url = input("\033[48;5;7m═⟩⟩ URL:\033[0m \033[32m\033[0m" (ask))
+url = input((ask)
+ask = fade.pinkred("\033[48;5;7m═⟩⟩ URL:\033[0m \033[32m\033[0m")
 print("\033[32mLoading......")
 
 async def increment_view_count(session):
