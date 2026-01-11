@@ -41,9 +41,9 @@ print("""
 """)
 while attemps < 100:
     username = input("\033[38;5;2mUsername: \033[0m")
-    password = input("\033[38;5;2mPpassword: \033[0m")
+    password = input("\033[38;5;2mPassword: \033[0m")
 
-    if username == 'querty' and password == 'querty':
+    if username == 'cebong' and password == 'go*block':
         print("\033[48;5;7m═⟩⟩ \033[0m")
         break
     else:
