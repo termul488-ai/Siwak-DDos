@@ -20,15 +20,10 @@ def siwaka_tool():
         "User-Agent": user_agent.generate_user_agent()
     }
 
-    # Clear screen based on the operating system
-    osystem = sys.platform
-    if osystem == "linux":
-        os.system("clear")
-    else:
+    
         
-        
-    os.system("clear")
-    print("""
+os.system("clear")
+print("""
 
 """)
 
