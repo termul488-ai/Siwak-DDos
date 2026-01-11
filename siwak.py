@@ -17,9 +17,9 @@ class SockFlood:
 attemps = 0
 def display_header():
     header_lines = [
-       Fore.YELLOW + "	╔══════╗	
-       Fore.YELLOW + "	██████  ║
-       Fore.YELLOW + "   ╚══════╝
+       Fore.YELLOW + "	╔══════╗	",
+       Fore.YELLOW + "	██████  ║",
+       Fore.YELLOW + "   ╚══════╝",
 
       ]
 for line in header_lines:
