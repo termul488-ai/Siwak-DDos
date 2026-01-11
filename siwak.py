@@ -164,7 +164,7 @@ def collect_proxies_only():
         time.sleep(random.uniform(1, 3))
     
     if not all_proxies:
-        print("No SOCKS5 proxies found.
+        print("No SOCKS5 proxies found.")
         return
     
     # Removing duplicates unique_proxies = list(set(all_proxies)) 
