@@ -37,11 +37,6 @@ logo = """
 faded_text = fade.fire(logo)
 print(faded_text)    
         
-os.system("clear")
-print("""
-
-""")
-
     num = 0
     reqs = []
 
