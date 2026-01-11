@@ -8,6 +8,9 @@ import threading
 import fade
 from colorama import Fore, Back, Style
 
+# Init color & logging
+init(autoreset=True)
+
 class SockFlood:
 	def __init__(self):
 		 os.system("cls")
