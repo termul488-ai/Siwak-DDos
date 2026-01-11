@@ -39,9 +39,9 @@ Logo = """
 	def command_parser(self,command):
 		if command=="help":
 			print(Fore.WHITE+"""
-	Welcome To PsyFlood Help Menu - 
 
-	(+) host %HOST% - Enter the Host Domain or Ip Address [!Required]
+	Help_menu:
+    (+) host %HOST% - Enter the Host Domain or Ip Address [!Required]
 	(+) port %PORT% - Enter a custom port if you have, or just don't use it will use port 80
 	(+) attacks %AMOUNT% - Enter a custom amount of attack, Default 1000
 	(+) start - Will start attacking and display outputs on console
