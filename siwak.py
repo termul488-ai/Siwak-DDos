@@ -52,8 +52,8 @@ while attemps < 100:
         continue
 
 ask = fade.pinkred("\033[48;5;7m═⟩⟩ URL:\033[0m \033[32m\033[0m")
-url = input(ask)
-print("\033[32mLoading......")
+        url = input(ask)
+        print("\033[32mLoading......")
 
 async def increment_view_count(session):
     try:
@@ -64,6 +64,7 @@ async def increment_view_count(session):
             else:
                 print("\033[48;5;3mInfo target \033[0m \033[33m" +str(view_count)+ " \033[35work\033[0m")
     except aiohttp.ClientError as e:
+        time.out(0.02)
             print("\033[33m" +str(url)+ "  \033[37mMaybe down!\033[0m")
 
 async def main():
