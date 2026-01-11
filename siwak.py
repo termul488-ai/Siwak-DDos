@@ -52,7 +52,7 @@ while attemps < 100:
         attemps += 1
         continue
 
-url = input("\033[48;5;4m═⟩⟩ Enter URL (e.g., http://example.com:\033[0m \033[32m\033[0m")
+url = input("\033[48;5;4m═⟩⟩ Enter URL (http://example.com:\033[0m \033[32m\033[0m")
 ask = fade.pinkred('txt')
 print("\033[32mLoading......")
 
@@ -64,10 +64,10 @@ async def increment_view_count(session):
                 print("\033[48;5;3mInfo target \033[0m \033[33m" +str(url)+ " \033[35work\033[0m")
             else:
                 time.sleep(1)
-                print("\033[48;5;3mInfo target \033[0m \033[33m" +str(view_count)+ " \033[35work\033[0m")
+                print("\033[38;5;3mInfo target \033[33m" +str(view_count)+ " \033[35work\033[0m")
     except aiohttp.ClientError as e:
         time.sleep(1)
-        print("\033[48;5;3mInfo target \033[0m +str(url)+ "  \033[37mMaybe down!\033[0m")
+        print("\033[48;5;1mInfo target \033[0m +str(url)+ "\033[37mMaybe down!\033[0m")
 
 async def main():
     connector = aiohttp.TCPConnector(limit=None)  # Enable connection pooling
