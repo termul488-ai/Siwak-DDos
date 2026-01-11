@@ -217,7 +217,7 @@ def collect_and_check_proxies():
     
     # Removing duplicates
     unique_proxies = list(set(all_proxies))
-    print(f"\nRemoving duplicates unique_proxies = list(set(all_proxies")) 
+    print(f"\nRemoving duplicates unique_proxies = list(set(all_proxies)") 
     print(f"\nFound {len(unique_proxies)} unique proxies")
     
     # Step 2: Testing functionality with automatic saving
