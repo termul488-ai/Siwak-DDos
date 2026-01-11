@@ -8,19 +8,34 @@ from pystyle import *
 import user_agent
 from colorama import Fore, Style, init
 
-# Initialize colorama
-init()
+# Initialize Colorama for colored output
+init(autoreset=True)
 
-# Define the function for Siwaka DoS Tool
-def siwaka_tool():
-    global reqs
 
     # Define headers for HTTP requests
     headers = {
         "User-Agent": user_agent.generate_user_agent()
     }
 
+
+
+def clear():
+    os.system("cls" if os.name == "nt" else "clear")
     
+
+os.system("clear")
+logo = """
+
+  ██╗ ████╗    ██╗       ██████╗  ████╗    ██╗ ███████╗
+  ██║ ██ ██║   ██║      ██╔═══██║ ██ ██║   ██║ ██╔════╝
+  ██║ ██║ ██║  ██║  ██╗ ██║   ██║ ██║ ██║  ██║ ██║
+  ██║ ██║  ██║ ██║  ██║ ██║   ██║ ██║  ██  ██║ ███████╗
+  ██║ ██║   ██ ██║      ██║   ██║ ██║   ██ ██║ ██╔════╝
+  ██║ ██║    ████║       ██████╔╝ ██║    ████║ ███████╗
+  ╚═╝ ╚═╝    ╚═══╝       ╚═════╝  ╚═╝    ╚═══╝ ╚══════╝
+"""
+faded_text = fade.fire(logo)
+print(faded_text)    
         
 os.system("clear")
 print("""
